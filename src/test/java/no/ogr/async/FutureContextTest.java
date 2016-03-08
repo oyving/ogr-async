@@ -2,6 +2,7 @@ package no.ogr.async;
 
 import org.junit.Test;
 import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Fail.*;
 
 public class FutureContextTest {
     private FutureContext context = new FutureContext();
@@ -11,7 +12,7 @@ public class FutureContextTest {
         final Integer integer = 42;
         context.completed(integer).onComplete(
                 value -> assertThat(value).isEqualTo(integer),
-                error -> { throw new RuntimeException(error); }
+                error -> fail("Not supposed to get error", error)
         );
     }
 
@@ -19,7 +20,7 @@ public class FutureContextTest {
     public void test_failed() {
         final Throwable exception = new RuntimeException("Halp");
         context.failed(exception).onComplete(
-                value -> { throw new RuntimeException("Not supposed to succeed"); },
+                value -> fail("Not supposed to succeed"),
                 error -> assertThat(error).isEqualTo(exception)
         );
     }
@@ -28,7 +29,7 @@ public class FutureContextTest {
     public void test_future_failing() {
         final RuntimeException exception = new RuntimeException("Halp");
         context.future(() -> { throw exception; }).onComplete(
-                value -> { throw new RuntimeException("Not supposed to succeed"); },
+                value -> fail(),
                 error -> assertThat(error).isEqualTo(exception)
         );
     }
