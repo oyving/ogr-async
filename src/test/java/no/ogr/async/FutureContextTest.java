@@ -23,4 +23,22 @@ public class FutureContextTest {
                 error -> assertThat(error).isEqualTo(exception)
         );
     }
+
+    @Test
+    public void test_future_failing() {
+        final RuntimeException exception = new RuntimeException("Halp");
+        context.future(() -> { throw exception; }).onComplete(
+                value -> { throw new RuntimeException("Not supposed to succeed"); },
+                error -> assertThat(error).isEqualTo(exception)
+        );
+    }
+
+    @Test
+    public void test_future_succeeding() {
+        final Integer integer = 42;
+        context.future(() -> integer).onComplete(
+                value -> assertThat(value).isEqualTo(integer),
+                error -> { throw new RuntimeException(error); }
+        );
+    }
 }
