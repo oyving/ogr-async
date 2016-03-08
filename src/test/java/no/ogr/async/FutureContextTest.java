@@ -29,7 +29,7 @@ public class FutureContextTest {
     public void test_future_failing() {
         final RuntimeException exception = new RuntimeException("Halp");
         context.future(() -> { throw exception; }).onComplete(
-                value -> fail(),
+                value -> fail("Not supposed to succeed"),
                 error -> assertThat(error).isEqualTo(exception)
         );
     }
@@ -39,7 +39,35 @@ public class FutureContextTest {
         final Integer integer = 42;
         context.future(() -> integer).onComplete(
                 value -> assertThat(value).isEqualTo(integer),
-                error -> { throw new RuntimeException(error); }
+                error -> fail("Not supposed to get error", error)
+        );
+    }
+
+    @Test
+    public void test_future_map_succeeding() {
+        final Integer integer = 42;
+        context.completed(integer).map(Object::toString).onComplete(
+                value -> assertThat(value).isEqualTo("42"),
+                error -> fail("Not supposed to get error", error)
+        );
+    }
+
+    @Test
+    public void test_future_map_failing() {
+        final Integer integer = 42;
+        final RuntimeException exception = new RuntimeException("Halp");
+        context.completed(integer).map(x -> { throw exception; }).onComplete(
+                value -> fail("Not supposed to succeed"),
+                error -> assertThat(error).isEqualTo(exception)
+        );
+    }
+
+    @Test
+    public void test_failed_future_map_failing() {
+        final RuntimeException exception = new RuntimeException("Halp");
+        context.failed(exception).map(Object::toString).onComplete(
+                value -> fail("Not supposed to succeed"),
+                error -> assertThat(error).isEqualTo(exception)
         );
     }
 }
