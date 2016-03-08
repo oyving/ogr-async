@@ -16,7 +16,7 @@ public final class PromisedFuture<T> implements Future<T> {
     }
 
     public <R> Future<R> map(Function<T, R> mapper) {
-        final Promise<R> promise = new DefaultPromise<R>();
+        final Promise<R> promise = new DefaultPromise<R>(executorService);
         onComplete(
                 (result) -> {
                     try {
@@ -32,7 +32,7 @@ public final class PromisedFuture<T> implements Future<T> {
     }
 
     public <R> Future<R> flatMap(Function<T, Future<R>> mapper) {
-        final Promise<R> promise = new DefaultPromise<>();
+        final Promise<R> promise = new DefaultPromise<>(executorService);
         onComplete(
                 (result) -> {
                     try {
