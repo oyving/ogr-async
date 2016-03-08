@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class DefaultPromise<T> implements Promise<T> {
+final class DefaultPromise<T> implements Promise<T> {
 
     private final ExecutorService executorService;
     private final State<T> state = new State<T>();

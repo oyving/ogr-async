@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public final class PromisedFuture<T> implements Future<T> {
+final class PromisedFuture<T> implements Future<T> {
 
     private final ExecutorService executorService;
     private final DefaultPromise.State<T> state;
