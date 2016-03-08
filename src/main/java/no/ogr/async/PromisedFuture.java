@@ -47,14 +47,6 @@ final class PromisedFuture<T> implements Future<T> {
         return promise.future();
     }
 
-    public Optional<T> value() {
-        if (state.latch.getCount() == 0) {
-            return Optional.of(state.value.get());
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public void onComplete(Consumer<T> onSuccess, Consumer<Throwable> onFailure) {
         executorService.submit(new CompletionTask<T>(state, onSuccess, onFailure));
     }

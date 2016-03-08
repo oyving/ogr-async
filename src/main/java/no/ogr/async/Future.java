@@ -7,6 +7,5 @@ import java.util.function.Function;
 public interface Future<T> {
     <R> Future<R> map(Function<T, R> mapper);
     <R> Future<R> flatMap(Function<T, Future<R>> mapper);
-    Optional<T> value();
     void onComplete(Consumer<T> onSuccess, Consumer<Throwable> onFailure);
 }
