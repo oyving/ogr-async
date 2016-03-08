@@ -36,6 +36,11 @@ public class FutureContext {
         return future;
     }
 
+    public Future<Void> never() {
+        final Promise<Void> promise = new DefaultPromise<>(executorService);
+        return promise.future();
+    }
+
     public <T> Promise<T> promise() {
         return new DefaultPromise<>(executorService);
     }
