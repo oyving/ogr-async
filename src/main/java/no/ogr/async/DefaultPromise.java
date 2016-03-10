@@ -29,7 +29,7 @@ final class DefaultPromise<T> implements Promise<T> {
     }
 
     public void fail(Throwable throwable) {
-        synchronized (this) {
+        synchronized (state) {
             if (state.latch.getCount() == 0) {
                 throw new IllegalStateException("Promise already fulfilled");
             }
