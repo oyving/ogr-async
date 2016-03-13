@@ -17,9 +17,7 @@ public class FutureContext {
     }
 
     public <T> Future<T> future(Supplier<T> supplier) {
-        final Promise<T> promise = new DefaultPromise<>(executorService);
-        executorService.submit(new FutureTask<T>(supplier, promise));
-        return promise.future();
+        return unit().map(x -> supplier.get());
     }
 
     public <T> Future<T> completed(T value) {
@@ -34,6 +32,10 @@ public class FutureContext {
         final Future<T> future = promise.future();
         promise.fail(error);
         return future;
+    }
+
+    public Future<Void> unit() {
+        return completed(null);
     }
 
     public Future<Void> never() {
@@ -53,7 +55,6 @@ public class FutureContext {
             this.computation = computation;
             this.promise = promise;
         }
-
 
         @Override
         public void run() {
