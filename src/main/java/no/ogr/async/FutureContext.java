@@ -75,23 +75,4 @@ public class FutureContext {
         return new DefaultPromise<>(executorService);
     }
 
-    private static class FutureTask<T> implements Runnable {
-        private final Supplier<T> computation;
-        private final Promise<T> promise;
-
-        private FutureTask(Supplier<T> computation, Promise<T> promise) {
-            this.computation = computation;
-            this.promise = promise;
-        }
-
-        @Override
-        public void run() {
-            try {
-                final T value = computation.get();
-                promise.fulfill(value);
-            } catch (Throwable e) {
-                promise.fail(e);
-            }
-        }
-    }
 }
