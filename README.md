@@ -32,7 +32,14 @@ context.future(
     System.err::println
 );
 
+
+// futures can be mapped
 Future<Integer> f1 = context.future(() -> 42);
 Future<String> f2 = f1.map(Object::toString);
+
+// if you need a promise you can generate that
+Promise<Integer> p1 = context.promise();
+Future<Integer> f1 = p1.future();
+p1.fulfill(42);
 ```
 
