@@ -11,7 +11,7 @@ context.completed(42).onComplete(
     System.err::println  // prints nothing - this is not an error
 );
 
-// create a failed promise
+// create a failed future
 context.failed(new RuntimeException()).onComplete(
     System.out::println, // prints nothing - this is not a success
     System.err::println  // prints "java.lang.RuntimeException"
