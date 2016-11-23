@@ -75,6 +75,8 @@ final class PromisedFuture<T> implements Future<T> {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                state.error.set(e);
+                onError.accept(e);
             }
         }
     }
